@@ -1,7 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
-const { get } = require('express/lib/response');
+
+const { find } = require('geo-tz')
+const moment = require('moment-timezone');
 
 const app = express();
 const port = 3000;
@@ -171,10 +173,17 @@ function generateForecast(latitude, longitude, units, language, weather) {
     for (const day of weather.daily.data) {
         var valid = new Date(day.time * 1000 + 25200);
         var expirationTime = day["time"] + 25200 + 86400;
-        var valid_local = new Date(day.time * 1000 + 25200).toLocaleString('sv-SE', { timeZone: 'Europe/Berlin' }).replace(' ', 'T') + '+0200';
-        var local_sunrise = new Date(day.sunriseTime * 1000).toLocaleString('sv-SE', { timeZone: 'Europe/Berlin' }).replace(' ', 'T') + '+0200';
-        var local_sunset = new Date(day.sunsetTime * 1000).toLocaleString('sv-SE', { timeZone: 'Europe/Berlin' }).replace(' ', 'T') + '+0200';
 
+        var timeZone = find(latitude, longitude)[0];
+
+        function formatDate(date, timeZone) {
+            const formattedDate = moment(date).tz(timeZone).format('YYYY-MM-DDTHH:mm:ssZ');
+            return formattedDate.replace(/(\d{2}):(\d{2})$/, '$1$2');
+        }
+
+        var valid_local = formatDate(valid, timeZone);
+        var local_sunrise = formatDate(new Date(day.sunriseTime * 1000), timeZone);
+        var local_sunset = formatDate(new Date(day.sunsetTime * 1000), timeZone);
 
         var daypart = {
             "alt_daypart_name": daysOfWeek[valid.getDay()],
