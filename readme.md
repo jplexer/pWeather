@@ -14,6 +14,8 @@ To use pWeather, you need to provide a valid weather API key from PirateWeather.
 
 ## Use with RWS
 
+**NOTE: Please consider supporting Rebble by purchasing a Rebble Subscription. I made this for people who prefer self-hosting as the official rebble-weather Proxy requires the IBM API**
+
 In order to use pWeather with Rebble Web Services:
 
 1. Go to https://auth.rebble.io/account/
