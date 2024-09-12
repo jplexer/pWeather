@@ -169,7 +169,8 @@ function generateForecast(latitude, longitude, units, language, weather) {
 
     const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     for (const day of weather.daily.data) {
-        var valid = new Date(day.time * 1000 + 25200);
+        var valid = new Date(day.time * 1000 + (25200 * 1000));
+        var valid_night = new Date(day.time * 1000 + (25200 * 1000) + (43200 * 1000));
         var expirationTime = day["time"] + 25200 + 86400;
 
         var timeZone = find(latitude, longitude)[0];
@@ -180,6 +181,7 @@ function generateForecast(latitude, longitude, units, language, weather) {
         }
 
         var valid_local = formatDate(valid, timeZone);
+        var valid_night_local = formatDate(valid_night, timeZone);
         var local_sunrise = formatDate(new Date(day.sunriseTime * 1000), timeZone);
         var local_sunset = formatDate(new Date(day.sunsetTime * 1000), timeZone);
 
@@ -188,8 +190,8 @@ function generateForecast(latitude, longitude, units, language, weather) {
             "clds": day["cloudCover"] * 100,
             "day_ind": "D",
             "daypart_name": daysOfWeek[valid.getDay()], 
-            "fcst_valid": day.time,
-            "fcst_valid_local": valid_local,
+            "fcst_valid": day.sunriseTime * 1000,
+            "fcst_valid_local": local_sunrise,
             "golf_category": "boring sports",
             "hi": Math.round(calculateHeatIndex(day.temperatureHigh, day.humidity * 100)),
             "icon_code": getWeatherIcon(day.icon),
@@ -227,8 +229,8 @@ function generateForecast(latitude, longitude, units, language, weather) {
             "clds": day["cloudCover"] * 100,
             "day_ind": "D",
             "daypart_name": daysOfWeek[valid.getDay()] + " Night", 
-            "fcst_valid": day.time,
-            "fcst_valid_local": valid_local,
+            "fcst_valid": day.sunsetTime * 1000,
+            "fcst_valid_local": local_sunset,
             "golf_category": "boring sports",
             "hi": Math.round(calculateHeatIndex(day.temperatureHigh, day.humidity * 100)),
             "icon_code": getWeatherIcon(day.icon),
