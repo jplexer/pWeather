@@ -20,8 +20,6 @@ app.get('/api/v1/geocode/:latitude/:longitude', (req, res) => {
     const units = req.query.units || 'm';
     const language = req.query.language || 'en_US';
 
-    console.log(`Call receive: ${req.url}`)
-
     var apiUnits
 
     switch (units) {
