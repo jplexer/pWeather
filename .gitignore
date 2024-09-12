@@ -1,0 +1,31 @@
+# Ignore compiled binaries
+*.exe
+*.dll
+*.so
+
+# Ignore build output
+/build
+/dist
+
+# Ignore IDE and editor files
+.idea/
+.vscode/
+
+# Ignore package manager directories
+/node_modules
+/vendor
+
+# Ignore log files
+*.log
+
+# Ignore environment-specific files
+.env
+.env.local
+.env.*.local
+
+# Ignore sensitive or private information
+secrets.txt
+
+# ignore local development files
+pirateweather.json
+expected.json
