@@ -172,6 +172,7 @@ function generateForecast(latitude, longitude, units, language, weather) {
         var valid = new Date(day.time * 1000 + (25200 * 1000));
         var valid_night = new Date(day.time * 1000 + (25200 * 1000) + (43200 * 1000));
         var expirationTime = day["time"] + 25200 + 86400;
+        var weatherunit
 
         var timeZone = find(latitude, longitude)[0];
 
@@ -185,6 +186,21 @@ function generateForecast(latitude, longitude, units, language, weather) {
         var local_sunrise = formatDate(new Date(day.sunriseTime * 1000), timeZone);
         var local_sunset = formatDate(new Date(day.sunsetTime * 1000), timeZone);
 
+        switch (units) {
+            case 'm':
+                weatherunit = "C";
+                break;
+            case 'h':
+                weatherunit = "F";
+                break;
+            case 'e':
+                weatherunit = "F";
+                break;
+            default:
+                weatherunit = "C";
+                break;
+        }
+
         var daypart = {
             "alt_daypart_name": daysOfWeek[valid.getDay()],
             "clds": day["cloudCover"] * 100,
@@ -197,7 +213,7 @@ function generateForecast(latitude, longitude, units, language, weather) {
             "icon_code": getWeatherIcon(day.icon),
             "icon_extd": getWeatherIcon(day.icon) * 100,
             "long_daypart_name": daysOfWeek[valid.getDay()],
-            "narrative": day.summary + ". High of " + day.temperatureHigh + "C. Powered by PirateWeather.",
+            "narrative": day.summary + ". High of " + day.temperatureHigh + weatherunit + ". Powered by PirateWeather.",
             "phrase_12char": day.summary,
             "phrase_22char": day.summary,
             "phrase_32char": day.summary,
@@ -236,7 +252,7 @@ function generateForecast(latitude, longitude, units, language, weather) {
             "icon_code": getWeatherIcon(day.icon),
             "icon_extd": getWeatherIcon(day.icon) * 100,
             "long_daypart_name": daysOfWeek[valid.getDay()],
-            "narrative": day.summary + ". Low of " + day.temperatureLow + "C. Powered by PirateWeather.",
+            "narrative": day.summary + ". Low of " + day.temperatureLow + weatherunit + ".. Powered by PirateWeather.",
             "phrase_12char": day.summary,
             "phrase_22char": day.summary,
             "phrase_32char": day.summary,
